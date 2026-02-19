@@ -10,7 +10,7 @@ load: function(params)
 },
 initDelete: async function()
 {
-  document.getElementById('confirmTitle').innerText=`Delete ${this.entityName}`;
+  document.getElementById('confirmTitle').innerText='Employee (Delete Module)';
   const confirmData=document.getElementById('confirmData');
   document.getElementById('confirmYesBtn').onclick = (e) =>
    {
