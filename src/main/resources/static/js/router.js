@@ -107,6 +107,21 @@ if(push)
  function kebabToCamel(str) {
     return str.replace(/-./g, x => x[1].toUpperCase());
 }
+
+function requireRole(role,defaultState) {
+    const userRole = sessionStorage.getItem('userRole');
+
+    if (userRole !== role) {
+        console.warn("Access Denied.");
+        window.history.replaceState(null, "", `/${defaultState}`);
+        loadModule(`${defaultState}`, {}, false);
+        return false;
+    }
+
+    return true;
+}
+
+
 function updateNavigation(activeModule)
 {
 const linkHome=document.getElementById('link-home');
@@ -159,9 +174,11 @@ window.addEventListener('DOMContentLoaded',()=>{
         loadModule('employees',{},false);
     }else if (currentPath === '/employees/add')
     {
+         if (!requireRole('ADMIN','employees')) return;
         loadModule('employee-form', { mode: 'ADD' }, false);
     }else if(currentPath.startsWith('/employees/edit'))
     {
+        if (!requireRole('ADMIN','employees')) return;
         const pathIdInfo=parseEmployeeId(currentPath);
         if(pathIdInfo.isValid)
         {
