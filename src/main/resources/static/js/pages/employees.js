@@ -8,7 +8,6 @@ load: async function()
 {
     const tableBody=document.getElementById('employeeTableBody');
     const userRole=sessionStorage.getItem('userRole');
-    let actionButtonsHTML='';
     try
     {
        const data=await employeeService.getAll();

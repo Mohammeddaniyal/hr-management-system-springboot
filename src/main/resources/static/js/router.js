@@ -192,6 +192,7 @@ window.addEventListener('DOMContentLoaded',()=>{
         }
     }else if(currentPath.startsWith('/employees/delete'))
     {
+             if (!requireRole('ADMIN','employees')) return;
             const pathIdInfo=parseEmployeeId(currentPath);
                 if(pathIdInfo.isValid)
                 {
@@ -209,9 +210,11 @@ window.addEventListener('DOMContentLoaded',()=>{
     }
     else if (currentPath === '/designations/add')
     {
+         if (!requireRole('ADMIN','designations')) return;
         loadModule('designation-form', { mode: 'ADD' }, false);
     }else if(currentPath.startsWith('/designations/edit'))
     {
+             if (!requireRole('ADMIN','designations')) return;
         const pathCodeInfo=parseDesignationCode(currentPath);
         if(pathCodeInfo.isValid)
         {
@@ -225,7 +228,8 @@ window.addEventListener('DOMContentLoaded',()=>{
              loadModule('designations',undefined,false);
         }
     }else if(currentPath.startsWith('/designations/delete')){
-                const pathIdInfo=parseDesignationCode(currentPath);
+             if (!requireRole('ADMIN','designations')) return;
+             const pathIdInfo=parseDesignationCode(currentPath);
                     if(pathIdInfo.isValid)
                     {
                     loadModule('designation-delete-confirm',{id : pathIdInfo.code},false);
