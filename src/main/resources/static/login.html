@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>HR Application - Login</title>
+    <link rel='stylesheet' type='text/css' href='/css/styles.css'>
+    <script>
+        async function authentication()
+        {
+            const usernameStr=document.getElementById('username').value.trim();
+            const passwordStr=document.getElementById('password').value.trim();
+            const errorSection=document.getElementById('errorSection');
+            errorSection.innerHTML='';
+
+            // note: spring security don't excpects the credentials in JSON format
+            // They expect Form Data by default
+            const formData=new URLSearchParams();
+            formData.append('username',usernameStr);
+            formData.append('password',passwordStr);
+            try
+            {
+                const response=await fetch('/login',{
+                method:'POST',
+                headers:{
+                    'contentType':'application/x-www-form-urlencoded'
+                },
+                body: formData
+                });
+
+                if(response.url.includes('error'))
+                {
+                    errorSection.innerHTML="Invalid username or password";
+                }else if(response.ok)
+                {
+                    window.location.replace('/index.html');
+                }
+            }catch(error)
+            {
+                console.error("Login request failed:",error);
+                errorSection.innerHTML="Cannot connect to server";
+            }
+
+
+        }
+    </script>
+</head>
+<body>
+<!-- Main container starts here-->
+<div class='main-container'>
+    <!-- header starts here -->
+    <div class='header'>
+        <a href='/index.html'><img src='/images/logo.png' class='logo'></a><div class='brand-name'>&nbspHR Core</div>
+    </div>
+    <!-- header ends here -->
+    <!-- content-section starts here -->
+    <div class='content'>
+        <!-- login form section starts here -->
+        <div class='loginForm'>
+            <table border='0'>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <span id='errorSection' class='error'></span><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><input type='text' id='username' name='username' maxlength='15'></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type='password' id='password' name='password' maxlength='15'>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button type='button' onclick='authentication()'>Login</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- login form section ends here -->
+    </div>
+    <!-- content-section ends here -->
+    <!-- footer starts here -->
+    <div class='footer'>
+        &copy; HR Core 2026
+        <!-- footer ends here -->
+    </div>
+</div>
+<!-- Main container ends here-->
+</body>
+</html>

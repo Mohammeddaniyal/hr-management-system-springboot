@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->auth
                         // public endpoints
-                        .requestMatchers("/login","/css/**","/js/**").permitAll()
+                        .requestMatchers("/login","/login.html","/css/**","/js/**","/images/**").permitAll()
                         // read access (GET)
                         .requestMatchers(HttpMethod.GET,"/api/employees/**","/api/designations/**").hasAnyAuthority("ADMIN","USER")
                         // write access (POST,PUT,DELETE)
@@ -50,7 +50,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form->form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/",true)
+                        .failureUrl("/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout") // The URL  JS fetch() is calling[from router.js (window.logout)]
